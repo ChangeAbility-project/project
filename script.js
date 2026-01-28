@@ -7,7 +7,105 @@
  * - Form Handling
  * - Notifications
  * - Intersection Observer für Animationen
+ * - Blurry Spots Interactive Effect
  */
+
+// ============================================
+// 0. BLURRY SPOTS INTERACTIVE EFFECT
+// ============================================
+
+/**
+ * Initialisiert die interaktiven verschwommenen Flecken
+ * Die Flecken folgen der Mausbewegung und vergrößern sich bei Klicks
+ */
+function initBlurrySpots() {
+    const container = document.getElementById('blurrySpotsContainer');
+    const spots = document.querySelectorAll('.blurry-spot');
+    
+    if (!spots.length) return;
+    
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    
+    // Array mit ursprünglichen Positionen
+    const originalPositions = Array.from(spots).map(spot => ({
+        top: spot.style.top,
+        left: spot.style.left,
+        right: spot.style.right,
+        bottom: spot.style.bottom
+    }));
+    
+    // Mausbewegung-Listener
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        
+        spots.forEach((spot, index) => {
+            // Berechne die Distanz zwischen Maus und Fleck
+            const rect = spot.getBoundingClientRect();
+            const spotCenterX = rect.left + rect.width / 2;
+            const spotCenterY = rect.top + rect.height / 2;
+            
+            const distX = mouseX - spotCenterX;
+            const distY = mouseY - spotCenterY;
+            const distance = Math.sqrt(distX * distX + distY * distY);
+            
+            // Je näher die Maus, desto stärker die Anziehung
+            const maxDistance = 300;
+            if (distance < maxDistance) {
+                const force = (1 - distance / maxDistance) * 30;
+                const angle = Math.atan2(distY, distX);
+                
+                const moveX = Math.cos(angle) * force;
+                const moveY = Math.sin(angle) * force;
+                
+                spot.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.1)`;
+                spot.style.opacity = Math.min(0.9, 0.6 + force / 100);
+            } else {
+                spot.style.transform = 'translate(0, 0) scale(1)';
+                spot.style.opacity = '0.6';
+            }
+        });
+    });
+    
+    // Klick-Effekt
+    document.addEventListener('click', (e) => {
+        const clickX = e.clientX;
+        const clickY = e.clientY;
+        
+        spots.forEach((spot, index) => {
+            // Berechne die Distanz zwischen Klick und Fleck
+            const rect = spot.getBoundingClientRect();
+            const spotCenterX = rect.left + rect.width / 2;
+            const spotCenterY = rect.top + rect.height / 2;
+            
+            const distX = clickX - spotCenterX;
+            const distY = clickY - spotCenterY;
+            const distance = Math.sqrt(distX * distX + distY * distY);
+            
+            // Je näher der Klick, desto stärker die Expansion
+            const maxDistance = 400;
+            if (distance < maxDistance) {
+                const force = (1 - distance / maxDistance) * 50;
+                const angle = Math.atan2(distY, distX);
+                
+                // Fleck bewegt sich weg vom Klick
+                const moveX = Math.cos(angle) * force * -1;
+                const moveY = Math.sin(angle) * force * -1;
+                
+                // Temporär größer und undurchsichtiger machen
+                spot.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.3)`;
+                spot.style.opacity = Math.min(1, 0.6 + force / 100);
+                
+                // Nach 300ms zurück zur Normalposition
+                setTimeout(() => {
+                    spot.style.transform = 'translate(0, 0) scale(1)';
+                    spot.style.opacity = '0.6';
+                }, 300);
+            }
+        });
+    });
+}
 
 // ============================================
 // 1. MOBILE NAVIGATION TOGGLE
@@ -284,6 +382,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('ChangeAbility Website - Initialisierung gestartet');
 
     // Alle Funktionen aufrufen
+    initBlurrySpots();
     addAnimationStyles();
     initMobileMenu();
     initSmoothScroll();
