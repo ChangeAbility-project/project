@@ -105,8 +105,10 @@ body {
     bottom: 10%;
     left: 30%;
 }
-    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
-}
+
+/* ============================================
+   GLOBAL HTML & BODY STYLES
+   ============================================ */
 
 html {
     scroll-behavior: smooth;
@@ -116,7 +118,7 @@ html {
 
 body {
     font-family: var(--font-primary);
-    background-color: var(--light-color);
+    background-color: #ffffff;
     color: var(--text-color);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
