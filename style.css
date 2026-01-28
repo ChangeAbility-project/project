@@ -71,13 +71,13 @@ body {
 
 .blurry-spot {
     position: absolute;
-    width: 120px;
-    height: 120px;
-    background: radial-gradient(circle at 30% 30%, rgba(46, 204, 113, 0.8), rgba(46, 204, 113, 0.3), transparent);
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle at 30% 30%, rgba(46, 204, 113, 0.6), rgba(46, 204, 113, 0.2), transparent);
     border-radius: 50%;
-    filter: blur(40px);
-    mix-blend-mode: screen;
-    opacity: 0.6;
+    filter: blur(50px);
+    mix-blend-mode: multiply;
+    opacity: 0.8;
     transition: all 0.1s ease-out;
 }
 
