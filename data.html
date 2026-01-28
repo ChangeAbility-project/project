@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Dashboard - Minimalist Studio</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+</head>
+<body>
+    <!-- Custom Cursor Elements -->
+    <div class="cursor-inner"></div>
+    <div class="cursor-outer"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">Studio</a>
+            <ul class="nav-menu">
+                <li><a href="index.html#work" class="nav-link">Work</a></li>
+                <li><a href="data.html" class="nav-link">Data</a></li>
+                <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Dashboard Header -->
+    <section class="dashboard-header">
+        <h1 class="dashboard-title">Live Data Dashboard</h1>
+        <p class="dashboard-subtitle">Real-time sensor data visualization from embedded systems</p>
+    </section>
+
+    <!-- Dashboard Content -->
+    <section class="dashboard">
+        <!-- Current Stats -->
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="stat-value" id="current-temp">--°C</div>
+                <div class="stat-label">Temperature</div>
+                <div class="status-indicator">
+                    <span class="status-dot"></span>
+                    <span>Active</span>
+                </div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value" id="current-humidity">--%</div>
+                <div class="stat-label">Humidity</div>
+                <div class="status-indicator">
+                    <span class="status-dot"></span>
+                    <span>Active</span>
+                </div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value" id="current-pressure">-- hPa</div>
+                <div class="stat-label">Pressure</div>
+                <div class="status-indicator">
+                    <span class="status-dot"></span>
+                    <span>Active</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="dashboard-grid">
+            <!-- Temperature & Humidity Chart -->
+            <div class="chart-card">
+                <h3 class="chart-title">Environmental Metrics</h3>
+                <div class="chart-container">
+                    <canvas id="sensor-chart"></canvas>
+                </div>
+                <p style="font-size: 0.95rem; color: #757575; margin-top: var(--spacing-md);">
+                    Updates every 5 seconds. Data points show real-time readings from the embedded system.
+                </p>
+            </div>
+
+            <!-- Information Card -->
+            <div class="chart-card">
+                <h3 class="chart-title">System Information</h3>
+                <div style="padding: var(--spacing-md) 0;">
+                    <div style="margin-bottom: var(--spacing-lg);">
+                        <p class="detail-label">DATA SOURCE</p>
+                        <p class="detail-value">ESP32 Microcontroller</p>
+                    </div>
+                    <div style="margin-bottom: var(--spacing-lg);">
+                        <p class="detail-label">SENSORS</p>
+                        <p class="detail-value">BME280 (Temperature, Humidity, Pressure)</p>
+                    </div>
+                    <div style="margin-bottom: var(--spacing-lg);">
+                        <p class="detail-label">UPDATE INTERVAL</p>
+                        <p class="detail-value">5 seconds</p>
+                    </div>
+                    <div>
+                        <p class="detail-label">CONNECTION STATUS</p>
+                        <p class="detail-value">
+                            <span class="status-indicator">
+                                <span class="status-dot"></span>
+                                <span>Connected</span>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Explanation -->
+        <div style="margin-top: var(--spacing-xl); padding: var(--spacing-xl) 0; border-top: 1px solid var(--border-color); text-align: center;">
+            <h2>About This Dashboard</h2>
+            <p style="max-width: 800px; margin: 0 auto; color: #757575;">
+                This dashboard demonstrates real-time data visualization from an embedded system. The custom interactive cursor adds a layer of sophistication to the minimalist interface. Data updates automatically every 5 seconds, with historical data points maintained for trend analysis.
+            </p>
+            <p style="max-width: 800px; margin: var(--spacing-md) auto 0; color: #757575;">
+                In a production environment, this would connect to an actual ESP32 running a web server or MQTT broker. The Chart.js library provides elegant, performant data visualization without unnecessary complexity.
+            </p>
+        </div>
+
+        <!-- API Integration Notes -->
+        <div style="margin-top: var(--spacing-xl); padding: var(--spacing-lg); background-color: #f5f5f5; border: 1px solid #e0e0e0;">
+            <h3 style="margin-bottom: var(--spacing-md);">Integration Notes</h3>
+            <p style="margin-bottom: var(--spacing-md); font-size: 0.95rem; color: #757575;">
+                <strong>To connect to an actual ESP32:</strong>
+            </p>
+            <ul style="margin-left: var(--spacing-lg); color: #757575; font-size: 0.95rem; line-height: 1.8;">
+                <li>Replace <code style="background: #fff; padding: 2px 6px; border-radius: 3px;">/api/sensor-data</code> with your ESP32 endpoint</li>
+                <li>Ensure CORS headers are properly configured on the ESP32</li>
+                <li>Implement JSON response format: <code style="background: #fff; padding: 2px 6px; border-radius: 3px;">{ temperature, humidity, pressure, timestamp }</code></li>
+                <li>The dashboard automatically fallbacks to mock data if the API is unavailable</li>
+                <li>Data history is maintained for up to 20 points for chart visualization</li>
+            </ul>
+        </div>
+
+        <!-- Back Link -->
+        <div style="text-align: center; padding: var(--spacing-xl) 0; border-top: 1px solid var(--border-color);">
+            <a href="index.html" class="back-link">← Back to Home</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 Minimalist Studio. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

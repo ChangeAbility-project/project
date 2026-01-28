@@ -1,415 +1,332 @@
-/**
- * ChangeAbility Website - Main JavaScript File
- * ============================================
- * Funktionen:
- * - Mobile Navigation Toggle
- * - Smooth Scrolling
- * - Form Handling
- * - Notifications
- * - Intersection Observer für Animationen
- * - Blurry Spots Interactive Effect
- */
+/* ======================================
+   Custom Cursor System
+   ====================================== */
 
-// ============================================
-// 0. BLURRY SPOTS INTERACTIVE EFFECT
-// ============================================
+class CustomCursor {
+    constructor() {
+        this.innerCursor = document.querySelector('.cursor-inner');
+        this.outerCursor = document.querySelector('.cursor-outer');
+        
+        this.innerX = 0;
+        this.innerY = 0;
+        this.outerX = 0;
+        this.outerY = 0;
+        
+        this.isHovering = false;
+        this.easeAmount = 0.12; // Delay/lag factor for outer cursor
+        
+        this.init();
+    }
 
-/**
- * Initialisiert die interaktiven verschwommenen Flecken
- * Die Flecken folgen der Mausbewegung und vergrößern sich bei Klicks
- */
-function initBlurrySpots() {
-    const container = document.getElementById('blurrySpotsContainer');
-    const spots = document.querySelectorAll('.blurry-spot');
-    
-    if (!spots.length) return;
-    
-    let mouseX = window.innerWidth / 2;
-    let mouseY = window.innerHeight / 2;
-    
-    // Array mit ursprünglichen Positionen
-    const originalPositions = Array.from(spots).map(spot => ({
-        top: spot.style.top,
-        left: spot.style.left,
-        right: spot.style.right,
-        bottom: spot.style.bottom
-    }));
-    
-    // Mausbewegung-Listener
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
+    init() {
+        // Check if touch device
+        if (this.isTouchDevice()) return;
+
+        document.addEventListener('mousemove', (e) => this.onMouseMove(e));
+        document.addEventListener('mouseenter', (e) => this.onMouseEnter(e));
+        document.addEventListener('mouseleave', (e) => this.onMouseLeave(e));
         
-        spots.forEach((spot, index) => {
-            // Berechne die Distanz zwischen Maus und Fleck
-            const rect = spot.getBoundingClientRect();
-            const spotCenterX = rect.left + rect.width / 2;
-            const spotCenterY = rect.top + rect.height / 2;
-            
-            const distX = mouseX - spotCenterX;
-            const distY = mouseY - spotCenterY;
-            const distance = Math.sqrt(distX * distX + distY * distY);
-            
-            // Je näher die Maus, desto stärker die Anziehung
-            const maxDistance = 300;
-            if (distance < maxDistance) {
-                const force = (1 - distance / maxDistance) * 30;
-                const angle = Math.atan2(distY, distX);
-                
-                const moveX = Math.cos(angle) * force;
-                const moveY = Math.sin(angle) * force;
-                
-                spot.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.1)`;
-                spot.style.opacity = Math.min(0.9, 0.6 + force / 100);
-            } else {
-                spot.style.transform = 'translate(0, 0) scale(1)';
-                spot.style.opacity = '0.6';
-            }
-        });
-    });
-    
-    // Klick-Effekt
-    document.addEventListener('click', (e) => {
-        const clickX = e.clientX;
-        const clickY = e.clientY;
+        this.addHoverListeners();
+        this.animate();
+    }
+
+    isTouchDevice() {
+        return (
+            (navigator.maxTouchPoints > 0) ||
+            (navigator.msMaxTouchPoints > 0) ||
+            window.matchMedia('(hover: none)').matches
+        );
+    }
+
+    onMouseMove(e) {
+        this.innerX = e.clientX;
+        this.innerY = e.clientY;
         
-        spots.forEach((spot, index) => {
-            // Berechne die Distanz zwischen Klick und Fleck
-            const rect = spot.getBoundingClientRect();
-            const spotCenterX = rect.left + rect.width / 2;
-            const spotCenterY = rect.top + rect.height / 2;
-            
-            const distX = clickX - spotCenterX;
-            const distY = clickY - spotCenterY;
-            const distance = Math.sqrt(distX * distX + distY * distY);
-            
-            // Je näher der Klick, desto stärker die Expansion
-            const maxDistance = 400;
-            if (distance < maxDistance) {
-                const force = (1 - distance / maxDistance) * 50;
-                const angle = Math.atan2(distY, distX);
-                
-                // Fleck bewegt sich weg vom Klick
-                const moveX = Math.cos(angle) * force * -1;
-                const moveY = Math.sin(angle) * force * -1;
-                
-                // Temporär größer und undurchsichtiger machen
-                spot.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.3)`;
-                spot.style.opacity = Math.min(1, 0.6 + force / 100);
-                
-                // Nach 300ms zurück zur Normalposition
-                setTimeout(() => {
-                    spot.style.transform = 'translate(0, 0) scale(1)';
-                    spot.style.opacity = '0.6';
-                }, 300);
-            }
+        this.innerCursor.style.left = this.innerX + 'px';
+        this.innerCursor.style.top = this.innerY + 'px';
+    }
+
+    onMouseEnter(e) {
+        this.innerCursor.style.opacity = '1';
+        this.outerCursor.style.opacity = '0.6';
+    }
+
+    onMouseLeave(e) {
+        this.innerCursor.style.opacity = '0';
+        this.outerCursor.style.opacity = '0';
+    }
+
+    addHoverListeners() {
+        const interactiveElements = document.querySelectorAll(
+            'a, button, .nav-link, .work-link, .contact-link, .cta-button, input, textarea'
+        );
+
+        interactiveElements.forEach((el) => {
+            el.addEventListener('mouseenter', () => this.onElementHover());
+            el.addEventListener('mouseleave', () => this.onElementLeave());
         });
-    });
+    }
+
+    onElementHover() {
+        this.isHovering = true;
+        this.outerCursor.classList.add('cursor-hover');
+    }
+
+    onElementLeave() {
+        this.isHovering = false;
+        this.outerCursor.classList.remove('cursor-hover');
+    }
+
+    animate() {
+        // Ease out animation for outer cursor following inner cursor
+        this.outerX += (this.innerX - this.outerX) * this.easeAmount;
+        this.outerY += (this.innerY - this.outerY) * this.easeAmount;
+
+        this.outerCursor.style.left = this.outerX + 'px';
+        this.outerCursor.style.top = this.outerY + 'px';
+
+        requestAnimationFrame(() => this.animate());
+    }
 }
 
-// ============================================
-// 1. MOBILE NAVIGATION TOGGLE
-// ============================================
+/* Initialize cursor when DOM is loaded */
+document.addEventListener('DOMContentLoaded', () => {
+    new CustomCursor();
+});
 
-/**
- * Initialisiert das Mobile Menu Toggle
- * Macht die Navigation auf mobilen Geräten benutzbar
- */
-function initMobileMenu() {
-    const menuToggle = document.getElementById('menuToggle');
-    const navMenu = document.getElementById('navMenu');
+/* ======================================
+   Data Fetching & Chart Simulation
+   ====================================== */
 
-    if (!menuToggle) return;
+class DataDashboard {
+    constructor() {
+        this.data = {
+            temperature: [],
+            humidity: [],
+            pressure: [],
+            timestamps: []
+        };
+        
+        this.chart = null;
+        this.init();
+    }
 
-    // Menu Toggle Listener
-    menuToggle.addEventListener('click', function() {
-        this.classList.toggle('active');
-        navMenu.classList.toggle('active');
-    });
-
-    // Menü schließen wenn Link geklickt wird
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', function() {
-            menuToggle.classList.remove('active');
-            navMenu.classList.remove('active');
-        });
-    });
-
-    // Menü schließen bei Außenklick
-    document.addEventListener('click', function(event) {
-        if (!event.target.closest('.navbar')) {
-            menuToggle.classList.remove('active');
-            navMenu.classList.remove('active');
+    init() {
+        // Initialize chart if Chart.js is loaded
+        if (typeof Chart !== 'undefined') {
+            this.initChart();
         }
-    });
-}
+        
+        // Fetch data on page load
+        this.fetchESP32Data();
+        
+        // Set up interval to fetch data every 5 seconds
+        setInterval(() => this.fetchESP32Data(), 5000);
+    }
 
-// ============================================
-// 2. SMOOTH SCROLLING FÜR INTERNE LINKS
-// ============================================
+    /**
+     * Simulate fetching data from ESP32
+     * In a real scenario, this would connect to an actual ESP32 API endpoint
+     */
+    async fetchESP32Data() {
+        try {
+            // Simulated API endpoint - replace with actual ESP32 IP/endpoint
+            const response = await fetch('/api/sensor-data', {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            }).catch(() => {
+                // Fallback: Generate mock data if API is unavailable
+                return this.generateMockData();
+            });
 
-/**
- * Fügt Smooth Scrolling zu internen Links hinzu
- * Verbessert die UX bei Navigation
- */
-function initSmoothScroll() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            // Verhindere default nur bei internen Links
-            if (href !== '#') {
-                e.preventDefault();
-                const target = document.querySelector(href);
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
+            if (response.ok) {
+                const data = await response.json();
+                this.updateDashboard(data);
+            } else {
+                this.updateDashboard(this.generateMockData());
+            }
+        } catch (error) {
+            console.log('Using mock data:', error);
+            this.updateDashboard(this.generateMockData());
+        }
+    }
+
+    /**
+     * Generate mock sensor data for demonstration
+     */
+    generateMockData() {
+        const now = new Date();
+        return {
+            temperature: (20 + Math.random() * 10).toFixed(2),
+            humidity: (40 + Math.random() * 30).toFixed(2),
+            pressure: (1013 + Math.random() * 5).toFixed(2),
+            timestamp: now.toLocaleTimeString()
+        };
+    }
+
+    /**
+     * Update dashboard with fetched data
+     */
+    updateDashboard(data) {
+        // Update stat boxes if they exist
+        const tempElement = document.getElementById('current-temp');
+        const humidElement = document.getElementById('current-humidity');
+        const pressElement = document.getElementById('current-pressure');
+
+        if (tempElement) tempElement.textContent = data.temperature + '°C';
+        if (humidElement) humidElement.textContent = data.humidity + '%';
+        if (pressElement) pressElement.textContent = data.pressure + ' hPa';
+
+        // Add data to arrays for chart
+        this.data.temperature.push(parseFloat(data.temperature));
+        this.data.humidity.push(parseFloat(data.humidity));
+        this.data.pressure.push(parseFloat(data.pressure));
+        this.data.timestamps.push(data.timestamp);
+
+        // Keep only last 20 data points
+        if (this.data.temperature.length > 20) {
+            this.data.temperature.shift();
+            this.data.humidity.shift();
+            this.data.pressure.shift();
+            this.data.timestamps.shift();
+        }
+
+        // Update chart if it exists
+        if (this.chart) {
+            this.updateChart();
+        }
+    }
+
+    /**
+     * Initialize Chart.js chart
+     */
+    initChart() {
+        const ctx = document.getElementById('sensor-chart');
+        if (!ctx) return;
+
+        this.chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: this.data.timestamps,
+                datasets: [
+                    {
+                        label: 'Temperature (°C)',
+                        data: this.data.temperature,
+                        borderColor: '#000000',
+                        backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: false,
+                        pointRadius: 3,
+                        pointBackgroundColor: '#000000',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2
+                    },
+                    {
+                        label: 'Humidity (%)',
+                        data: this.data.humidity,
+                        borderColor: '#757575',
+                        backgroundColor: 'rgba(117, 117, 117, 0.05)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: false,
+                        pointRadius: 3,
+                        pointBackgroundColor: '#757575',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        labels: {
+                            font: {
+                                family: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif",
+                                size: 12
+                            },
+                            color: '#1a1a1a',
+                            padding: 20
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        grid: {
+                            color: '#e0e0e0',
+                            drawBorder: false
+                        },
+                        ticks: {
+                            color: '#757575',
+                            font: {
+                                size: 11
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false,
+                            drawBorder: false
+                        },
+                        ticks: {
+                            color: '#757575',
+                            font: {
+                                size: 11
+                            },
+                            maxRotation: 45,
+                            minRotation: 0
+                        }
+                    }
                 }
             }
         });
-    });
-}
+    }
 
-// ============================================
-// 3. FORM HANDLING
-// ============================================
+    /**
+     * Update existing chart with new data
+     */
+    updateChart() {
+        if (!this.chart) return;
 
-/**
- * Initialisiert Contact Form
- * Behandelt Formular-Submission mit Validierung
- */
-function initContactForm() {
-    const form = document.getElementById('contactForm');
-    
-    if (!form) return;
-
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        // Form Daten sammeln
-        const formData = new FormData(this);
-        const data = Object.fromEntries(formData);
-
-        // Basis-Validierung
-        if (!data.name || !data.email || !data.message) {
-            showNotification('Bitte fülle alle Felder aus!', 'error');
-            return;
-        }
-
-        // Email-Validierung
-        if (!isValidEmail(data.email)) {
-            showNotification('Bitte gib eine gültige E-Mail ein!', 'error');
-            return;
-        }
-
-        // Erfolg Nachricht
-        showNotification('Danke für deine Nachricht! Wir kontaktieren dich bald.', 'success');
-        
-        // Form zurücksetzen
-        this.reset();
-
-        // Hinweis: In einer echten Anwendung würde hier
-        // eine Anfrage an den Server gesendet
-        console.log('Formulardaten:', data);
-    });
-}
-
-/**
- * Validiert eine E-Mail-Adresse
- */
-function isValidEmail(email) {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-}
-
-// ============================================
-// 4. NOTIFICATION SYSTEM
-// ============================================
-
-/**
- * Zeigt eine Benachrichtigung an
- * @param {string} message - Nachrichtentext
- * @param {string} type - 'success' oder 'error'
- */
-function showNotification(message, type = 'success') {
-    const notification = document.createElement('div');
-    
-    // Styles basierend auf Type
-    const bgColor = type === 'success' ? '#2ecc71' : '#e74c3c';
-    
-    notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background-color: ${bgColor};
-        color: white;
-        padding: 16px 24px;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        font-weight: 500;
-        font-size: 14px;
-        z-index: 10000;
-        animation: slideInRight 0.3s ease;
-        max-width: 300px;
-    `;
-    
-    notification.textContent = message;
-    document.body.appendChild(notification);
-
-    // Auto-entfernen nach 3 Sekunden
-    setTimeout(() => {
-        notification.style.animation = 'slideOutRight 0.3s ease';
-        setTimeout(() => notification.remove(), 300);
-    }, 3000);
-}
-
-// ============================================
-// 5. INTERSECTION OBSERVER FÜR ANIMATIONEN
-// ============================================
-
-/**
- * Initialisiert Intersection Observer
- * Animiert Elemente wenn sie in den Viewport kommen
- */
-function initIntersectionObserver() {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                // Element wird sichtbar
-                entry.target.style.opacity = '1';
-                entry.target.style.animation = 'slideInUp 0.6s ease forwards';
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    // Beobachte alle Cards
-    document.querySelectorAll('.project-card, .impact-item').forEach(element => {
-        element.style.opacity = '0';
-        observer.observe(element);
-    });
-}
-
-// ============================================
-// 6. BUTTON INTERACTIONS
-// ============================================
-
-/**
- * Initialisiert Button Interaktionen
- */
-function initButtons() {
-    const heroBtn = document.getElementById('heroBtn');
-    
-    if (heroBtn) {
-        heroBtn.addEventListener('click', function() {
-            // Scrolle zu Projekte Section
-            const projektSection = document.getElementById('projekte');
-            if (projektSection) {
-                projektSection.scrollIntoView({ behavior: 'smooth' });
-            }
-        });
+        this.chart.data.labels = this.data.timestamps;
+        this.chart.data.datasets[0].data = this.data.temperature;
+        this.chart.data.datasets[1].data = this.data.humidity;
+        this.chart.update('none'); // Update without animation for real-time feel
     }
 }
 
-// ============================================
-// 7. DYNAMISCHE ANIMATIONEN IN CSS HINZUFÜGEN
-// ============================================
-
-/**
- * Fügt Animations-Keyframes zum Document hinzu
- */
-function addAnimationStyles() {
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes slideOutRight {
-            from {
-                opacity: 1;
-                transform: translateX(0);
-            }
-            to {
-                opacity: 0;
-                transform: translateX(30px);
-            }
-        }
-
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Responsive hidden für mobile */
-        @media (max-width: 480px) {
-            .nav-menu {
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-            }
-        }
-    `;
-    document.head.appendChild(style);
-}
-
-// ============================================
-// 8. MAIN INITIALIZATION
-// ============================================
-
-/**
- * DOMContentLoaded Event
- * Initialisiert alle Funktionen wenn das DOM bereit ist
- */
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('ChangeAbility Website - Initialisierung gestartet');
-
-    // Alle Funktionen aufrufen
-    initBlurrySpots();
-    addAnimationStyles();
-    initMobileMenu();
-    initSmoothScroll();
-    initContactForm();
-    initIntersectionObserver();
-    initButtons();
-
-    console.log('✓ Alle Komponenten erfolgreich initialisiert');
+/* Initialize dashboard when on data page */
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('sensor-chart') || document.getElementById('current-temp')) {
+        new DataDashboard();
+    }
 });
 
-// ============================================
-// 9. UTILITY FUNCTIONS
-// ============================================
+/* ======================================
+   Smooth Scroll Enhancement
+   ====================================== */
 
-/**
- * Prüft ob Gerät mobile ist
- */
-function isMobileDevice() {
-    return window.innerWidth <= 768;
-}
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (href !== '#' && document.querySelector(href)) {
+            e.preventDefault();
+            document.querySelector(href).scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
 
-/**
- * Scrollt zu einem Element
- */
-function scrollToElement(selector) {
-    const element = document.querySelector(selector);
-    if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-    }
-}
+/* ======================================
+   Page Load Animation
+   ====================================== */
+
+window.addEventListener('load', () => {
+    document.body.classList.add('loaded');
+});

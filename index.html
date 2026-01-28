@@ -1,264 +1,89 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ChangeAbility - Nachhaltige Lösungen für die Zukunft. Entdecke unsere Leuchtturmprojekte: Fensterkraftwerk-Kit und Gardening-System.">
-    <title>ChangeAbility - Nachhaltige Innovationen</title>
+    <title>Minimalist Studio</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- ============================================
-         BLURRY SPOTS CONTAINER
-         ============================================ -->
-    <div class="blurry-spots-container" id="blurrySpotsContainer">
-        <div class="blurry-spot"></div>
-        <div class="blurry-spot"></div>
-        <div class="blurry-spot"></div>
-        <div class="blurry-spot"></div>
-        <div class="blurry-spot"></div>
-    </div>
+    <!-- Custom Cursor Elements -->
+    <div class="cursor-inner"></div>
+    <div class="cursor-outer"></div>
 
-    <!-- ============================================
-         HEADER & NAVIGATION
-         ============================================ -->
-    <header class="header">
-        <nav class="navbar">
-            <div class="nav-wrapper">
-                <!-- Logo -->
-                <div class="logo">
-                    <span class="logo-icon">♻️</span>
-                    <span class="logo-text">ChangeAbility</span>
-                </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">Studio</a>
+            <ul class="nav-menu">
+                <li><a href="#work" class="nav-link">Work</a></li>
+                <li><a href="data.html" class="nav-link">Data</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
 
-                <!-- Mobile Menu Toggle -->
-                <button class="menu-toggle" id="menuToggle" aria-label="Menü öffnen">
-                    <span class="hamburger"></span>
-                </button>
-
-                <!-- Navigation Menu -->
-                <ul class="nav-menu" id="navMenu">
-                    <li><a href="#home" class="nav-link">Startseite</a></li>
-                    <li><a href="#ueber" class="nav-link">Über uns</a></li>
-                    <li><a href="#projekte" class="nav-link">Projekte</a></li>
-                    <li><a href="#umfrage" class="nav-link">Umfrage</a></li>
-                    <li><a href="#kontakt" class="nav-link">Kontakt</a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
-
-    <!-- ============================================
-         HERO SECTION
-         ============================================ -->
-    <section id="home" class="hero">
-        <div class="hero-wrapper">
-            <div class="hero-content">
-                <h1 class="hero-title">Nachhaltigkeit in Aktion</h1>
-                <p class="hero-subtitle">ChangeAbility: Innovative Lösungen für eine nachhaltige Zukunft</p>
-                <button class="btn btn-primary" id="heroBtn">Mehr erfahren</button>
-            </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Minimalist Design for Modern Minds</h1>
+            <p class="hero-subtitle">Crafted with precision. Built for clarity.</p>
+            <a href="#work" class="cta-button">Explore Work</a>
         </div>
     </section>
 
-    <!-- ============================================
-         ABOUT SECTION
-         ============================================ -->
-    <section id="ueber" class="about">
-        <div class="container">
-            <h2 class="section-title">Wer wir sind</h2>
-            <div class="about-content">
-                <div class="about-text">
-                    <p>
-                        ChangeAbility ist eine Initiative, die praktische, nachhaltige Lösungen entwickelt. 
-                        Wir verwandeln Ideen in Projekte, die realen Impact haben und den Alltag aller nachhaltiger gestalten.
-                    </p>
-                    <p>
-                        Unser Fokus: Innovation, Nachhaltigkeit und gesellschaftliche Verantwortung. 
-                        Wir glauben, dass kleine Änderungen große Unterschiede machen können.
-                    </p>
-                </div>
-                <div class="about-stats">
-                    <div class="stat-box">
-                        <div class="stat-number">2</div>
-                        <div class="stat-label">Aktive Projekte</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-number">∞</div>
-                        <div class="stat-label">Möglichkeiten</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================
-         PROJECTS SECTION (LEUCHTTURMPROJEKTE)
-         ============================================ -->
-    <section id="projekte" class="projects">
-        <div class="container">
-            <h2 class="section-title">Unsere Leuchtturmprojekte</h2>
-            
-            <!-- Project 1: Fensterkraftwerk-Kit -->
-            <article class="project-card">
-                <div class="project-header">
-                    <div class="project-icon">⚡</div>
-                    <h3>Fensterkraftwerk-Kit</h3>
-                </div>
-                <div class="project-body">
-                    <p>
-                        Nutze die Kraft der Sonne direkt an Deinem Fenster! Unser Fensterkraftwerk-Kit 
-                        wandelt Sonnenlicht in Strom um – einfach, elegant und nachhaltig.
-                    </p>
-                    <ul class="project-features">
-                        <li>✓ Einfache Installation</li>
-                        <li>✓ Umweltfreundliche Energiequelle</li>
-                        <li>✓ Ideal für Apartments und kleine Häuser</li>
-                        <li>✓ Langlebig und wartungsarm</li>
-                    </ul>
-                </div>
-                <div class="project-footer">
-                    <span class="project-tag">Energie</span>
-                    <span class="project-tag">Innovation</span>
+    <!-- Work Section -->
+    <section id="work" class="work-section">
+        <h2 class="section-title">Selected Work</h2>
+        
+        <div class="work-grid">
+            <article class="work-card">
+                <div class="work-content">
+                    <h3 class="work-title">Project One</h3>
+                    <p class="work-description">A thoughtfully designed digital experience focused on simplicity and elegance. Each element serves a purpose.</p>
+                    <a href="portfolio-1.html" class="work-link">View Project →</a>
                 </div>
             </article>
 
-            <!-- Project 2: Gardening-System -->
-            <article class="project-card">
-                <div class="project-header">
-                    <div class="project-icon">🌱</div>
-                    <h3>Gardening-System</h3>
+            <article class="work-card">
+                <div class="work-content">
+                    <h3 class="work-title">Project Two</h3>
+                    <p class="work-description">Exploring the boundaries between form and function. Minimalism as a strategic approach to design.</p>
+                    <a href="portfolio-2.html" class="work-link">View Project →</a>
                 </div>
-                <div class="project-body">
-                    <p>
-                        Züchte Dein eigenes Gemüse und Kräuter überall – balkonfreundlich und wassersparend. 
-                        Unser modulares Gardening-System bringt Urban Farming in Deine Nähe.
-                    </p>
-                    <ul class="project-features">
-                        <li>✓ Platzsparend und modular</li>
-                        <li>✓ Automatisches Bewässerungssystem</li>
-                        <li>✓ Für Anfänger geeignet</li>
-                        <li>✓ 70% weniger Wasserverbrauch</li>
-                    </ul>
-                </div>
-                <div class="project-footer">
-                    <span class="project-tag">Landwirtschaft</span>
-                    <span class="project-tag">Urban Farming</span>
+            </article>
+
+            <article class="work-card">
+                <div class="work-content">
+                    <h3 class="work-title">Live Data Dashboard</h3>
+                    <p class="work-description">Real-time data visualization from embedded systems. Visualizing complexity through minimal design.</p>
+                    <a href="data.html" class="work-link">View Dashboard →</a>
                 </div>
             </article>
         </div>
     </section>
 
-    <!-- ============================================
-         SURVEY SECTION
-         ============================================ -->
-    <section id="umfrage" class="survey-section">
-        <div class="container">
-            <h2 class="section-title">Deine Meinung ist wichtig</h2>
-            <p class="survey-intro">
-                Hilf uns, noch bessere Lösungen zu entwickeln. Nimm an unserer Umfrage teil und teile Deine Ideen:
-            </p>
-            <a href="https://forms.gle/example" target="_blank" rel="noopener noreferrer" class="btn btn-secondary survey-link">
-                Zur Umfrage →
-            </a>
-            <p class="survey-note">
-                Die Umfrage dauert ca. 5 Minuten und Deine Antworten helfen uns sehr!
-            </p>
+    <!-- About Section -->
+    <section class="about-section">
+        <div class="about-content">
+            <h2 class="section-title">About This Studio</h2>
+            <p class="about-text">We believe in the power of minimalism. Every pixel, every space, every line has intention. Our work speaks through clarity and precision.</p>
+            <p class="about-text">This is a showcase of modern web design using vanilla technologies. No bloat, no unnecessary frameworks—just clean code and elegant design.</p>
         </div>
     </section>
 
-    <!-- ============================================
-         IMPACT SECTION
-         ============================================ -->
-    <section class="impact">
-        <div class="container">
-            <h2 class="section-title">Gemeinsam erreichen wir mehr</h2>
-            <div class="impact-grid">
-                <div class="impact-item">
-                    <div class="impact-icon">🌍</div>
-                    <h3>Umwelt</h3>
-                    <p>Reduzierung von CO2-Emissionen durch erneuerbare Energien</p>
-                </div>
-                <div class="impact-item">
-                    <div class="impact-icon">👥</div>
-                    <h3>Gemeinschaft</h3>
-                    <p>Zusammenarbeit für eine nachhaltige Zukunft</p>
-                </div>
-                <div class="impact-item">
-                    <div class="impact-icon">💡</div>
-                    <h3>Innovation</h3>
-                    <p>Zukunftsweisende Lösungen für aktuelle Probleme</p>
-                </div>
-            </div>
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <h2 class="section-title">Get In Touch</h2>
+        <div class="contact-content">
+            <p>Have a project in mind?</p>
+            <a href="mailto:hello@minimaliststudio.com" class="contact-link">hello@minimaliststudio.com</a>
         </div>
     </section>
 
-    <!-- ============================================
-         CONTACT SECTION
-         ============================================ -->
-    <section id="kontakt" class="contact">
-        <div class="container">
-            <h2 class="section-title">Kontakt & Zusammenarbeit</h2>
-            <div class="contact-content">
-                <div class="contact-info">
-                    <h3>Lass uns zusammenarbeiten</h3>
-                    <p>Du interessierst Dich für unsere Projekte oder hast Fragen? Wir freuen uns auf Dich!</p>
-                    <ul class="contact-list">
-                        <li>📧 <a href="mailto:info@changeability.de">info@changeability.de</a></li>
-                        <li>🌐 www.changeability.de</li>
-                        <li>📱 +49 (0) 123 456789</li>
-                    </ul>
-                </div>
-                <form class="contact-form" id="contactForm">
-                    <div class="form-group">
-                        <input type="text" name="name" placeholder="Dein Name" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" name="email" placeholder="Deine E-Mail" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea name="message" placeholder="Deine Nachricht..." rows="4" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Nachricht senden</button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================
-         FOOTER
-         ============================================ -->
+    <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>ChangeAbility</h4>
-                    <p>Nachhaltige Innovationen für eine bessere Zukunft.</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Navigation</h4>
-                    <ul>
-                        <li><a href="#home">Startseite</a></li>
-                        <li><a href="#ueber">Über uns</a></li>
-                        <li><a href="#projekte">Projekte</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Folge uns</h4>
-                    <div class="social-links">
-                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a>
-                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>
-                        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">Twitter</a>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 ChangeAbility. Alle Rechte vorbehalten. | 
-                    <a href="#datenschutz">Datenschutz</a> | 
-                    <a href="#impressum">Impressum</a>
-                </p>
-            </div>
-        </div>
+        <p>&copy; 2026 Minimalist Studio. All rights reserved.</p>
     </footer>
 
     <script src="script.js"></script>
